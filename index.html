@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#100b24"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Euan's Wrestling"><meta name="mobile-web-app-capable" content="yes"><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icons/icon-192.png" type="image/png"><link rel="apple-touch-icon" href="./icons/apple-touch-icon.png"><title>Euan's Wrestling Championship GO!</title>
+<style>
+:root{--gold:#ffcb51;--pink:#fa4e90;--cyan:#59f6fc;--bg:#100b24}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif;color:white;touch-action:none;-webkit-user-select:none;user-select:none}body{background:radial-gradient(ellipse at center,#362057,#0b0818 80%)}#shell{height:100dvh;width:100%;display:flex;align-items:center;justify-content:center;position:relative}#game{display:block;width:min(100vw,calc(100dvh * 1.7778));height:min(100dvh,calc(100vw * .5625));object-fit:contain;border:1px solid #6e4f9d;box-shadow:0 20px 70px #000b;touch-action:none}#overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#0e0a20a8;backdrop-filter:blur(4px);z-index:4;padding:12px}#overlay.hidden{display:none}.panel{width:min(94vw,580px);max-height:94dvh;overflow:auto;text-align:center;padding:28px 22px 23px;border:2px solid #ffc856;border-radius:22px;background:linear-gradient(155deg,#271950f0,#100c2df2 65%);box-shadow:0 0 45px #e0a62433,inset 0 0 65px #9f3ffd22}.eyebrow{color:#65f8ff;letter-spacing:5px;font-size:13px}.logo{font-size:clamp(30px,5.5vw,59px);line-height:.91;margin:9px 0 7px;font-style:italic;letter-spacing:1px;text-shadow:4px 5px 0 #93196e,8px 10px 0 #2d1c47}.logo span{color:#ffd455}.tagline{color:#ffd86e;font-size:clamp(16px,3vw,23px);letter-spacing:3px;margin:12px auto 16px}.desc{font-family:system-ui,sans-serif;font-size:14px;line-height:1.55;color:#e4dbfc;max-width:460px;margin:0 auto 17px}.trophy{font-size:55px;filter:drop-shadow(0 6px 11px #ffb31e83)}.action{font-family:Impact,'Arial Narrow Bold',sans-serif;letter-spacing:2px;font-size:22px;color:#1c1231;background:linear-gradient(180deg,#fff18c,#ffa634);border:0;border-radius:10px;padding:14px 30px;min-width:230px;box-shadow:0 6px 0 #965318,0 12px 20px #0008;cursor:pointer;touch-action:manipulation}.action:active{transform:translateY(4px);box-shadow:0 2px 0 #965318}.secondary{background:linear-gradient(180deg,#64ffff,#38a5ff);box-shadow:0 6px 0 #17619b}.tiny{font:11px system-ui,sans-serif;color:#ac9bc6;margin-top:15px}.keys{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;font:12px system-ui,sans-serif;margin:14px 0 18px}.keys b{background:#493465;border:1px solid #826aaf;border-radius:5px;padding:4px 7px}.small{font-family:system-ui,sans-serif;font-size:14px}.control-strip{position:absolute;left:0;right:0;bottom:max(env(safe-area-inset-bottom),6px);display:flex;justify-content:space-between;gap:10px;padding:0 clamp(8px,1.6vw,24px);z-index:2;pointer-events:none}.controls-left,.controls-right{display:flex;gap:8px;align-items:flex-end;pointer-events:auto}.touch{font-family:Impact,Arial,sans-serif;cursor:pointer;touch-action:none;color:#fff;background:#2c2047d9;border:2px solid #8d6cba;border-radius:14px;width:clamp(46px,5.6vw,73px);height:clamp(47px,8vh,65px);font-size:clamp(11px,1.35vw,16px);letter-spacing:.5px;box-shadow:0 5px #140e2b,0 0 14px #0008;backdrop-filter:blur(5px)}.touch:active,.touch.active{background:#684497;transform:translateY(3px);box-shadow:0 2px #140e2b}.touch.attack{border-color:#ffce65;background:#8f501ccb}.touch.grapple{border-color:#f45db4;background:#761959c9}.touch.special{border-color:#8cfbff;background:#166a83c9}.touch.lowblow{border-color:#ffa767;background:#713a26d9}.touch.pin{border-color:#bce476;background:#536c28c9}.touch[disabled]{opacity:.43}.topbar{position:absolute;top:max(8px,env(safe-area-inset-top));right:8px;z-index:3;display:flex;gap:7px}.mini{cursor:pointer;border:1px solid #795c9e;color:white;background:#160e28c9;border-radius:7px;padding:6px 11px;font:12px system-ui,sans-serif;touch-action:manipulation}#rotate{display:none;position:absolute;z-index:3;left:50%;top:64%;transform:translateX(-50%);border-radius:6px;background:#180e24c9;padding:6px 11px;color:#ffdb88;font:11px system-ui,sans-serif;white-space:nowrap}@media(pointer:fine){.control-strip{opacity:.10;transition:opacity .25s}.control-strip:hover{opacity:1}}@media(orientation:portrait) and (max-width:600px){#game{width:100vw;height:56.25vw}.control-strip{bottom:10px}.touch{width:clamp(39px,10vw,52px);height:clamp(42px,9vh,54px);font-size:12px}.controls-left,.controls-right{gap:5px}#rotate{display:block}.panel{padding:14px}.logo{font-size:35px}.trophy{font-size:31px}.keys{display:none}.tagline{font-size:16px;margin:8px}}@media(max-height:520px){.panel{padding:12px 20px}.trophy{font-size:30px}.logo{font-size:35px}.tagline{margin:5px}.desc{font-size:12px;margin-bottom:7px}.action{font-size:16px;padding:10px 20px}.keys{margin:5px 0}}
+</style>
+</head>
+<body><div id="shell"><canvas id="game" width="1280" height="720" aria-label="Wrestling game arena"></canvas>
+<div class="topbar"><button id="skip" class="mini" style="display:none">SKIP WALKOUT ▶</button><button id="mute" class="mini">♫ ON</button><button id="pause" class="mini">Ⅱ PAUSE</button></div>
+<div id="rotate">↻ Landscape looks best!</div>
+<div class="control-strip" id="mobileControls"><div class="controls-left"><button class="touch" data-input="left" aria-label="Move left">◀</button><button class="touch" data-input="right" aria-label="Move right">▶</button><button class="touch" data-input="jump" id="aerialButton">JUMP</button><button class="touch" data-input="block">BLOCK</button></div><div class="controls-right"><button class="touch attack" data-input="punch">HIT</button><button class="touch lowblow" data-input="kick">LOW BLOW</button><button class="touch grapple" data-input="grapple">SLAM</button><button class="touch pin" data-input="pin">PIN</button><button class="touch special" data-input="special">⚡ FINISH</button></div></div>
+<div id="overlay"><section class="panel" id="panel"></section></div></div>
+<script>
+(()=>{'use strict';
+const W=1280,H=720,c=document.getElementById('game'),ctx=c.getContext('2d'),overlay=document.getElementById('overlay'),panel=document.getElementById('panel'),mute=document.getElementById('mute'),pauseBtn=document.getElementById('pause');
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),random=(a,b)=>a+Math.random()*(b-a),TAU=Math.PI*2;
+let commentaryText='',commentaryTimer=0,commentaryCool=0,refWarning=0;let audio=null,soundOn=true,scene='menu',time=0,last=0,round=0,player=null,foe=null,pinState=null,particles=[],texts=[],shakes=0,flash=0,announcer='',announceTimer=0,matchSeconds=0,roundDelay=0,entranceLength=0,confetti=[],score=0,pauseReturn='fight';
+const held={left:false,right:false,block:false},pressed={};
+
+const quips={intro:['SOMEONE TELL THESE PEOPLE THIS IS NOT A TRAINING EXERCISE!','FIVE WRESTLERS, ONE BELT, ABSOLUTELY NO ADULT SUPERVISION!'],kick:['OOH! RIGHT IN THE FAMILY JEWELS!','THAT MOVE IS NOT COVERED BY THE WARRANTY!','DIRECT HIT TO THE MAIN ISOLATOR!','HE WILL BE WALKING HOME VERY CAREFULLY!'],recover:['HE IS BACK UP! WHERE DID HE FIND THOSE BATTERIES?','THAT MAN HAS MORE COMEBACKS THAN A BAD TV SOAP!'],hit:['THAT ONE HAD SOME MUSTARD ON IT!','THE REF HAS SEEN BETTER TECHNIQUE IN A CAR PARK!'],miss:['THE FROG HAS SPLASHED... ABSOLUTELY NOTHING!','HE HAS LAUNCHED HIMSELF STRAIGHT INTO NEXT TUESDAY!']};
+function shout(s,sec=2.5,force=false){if(!force&&commentaryCool>0)return;commentaryText=s;commentaryTimer=sec;commentaryCool=force?1.4:3.6}
+function pun(f){if(!f)return '';switch(f.bio.name){case 'ANTH WEIR':return 'ANTH WEIR HAS LOST HIS COMPOSURE! OH WAIT, HE NEVER HAD ANY!';case 'OWEN STRINGER':return 'OWEN STRINGER HAS BEEN UNSTRUNG!';case 'MARTY ALLEN':return 'MARTY ALLEN? THE PARTY HAS BEEN CANCELLED!';case 'JOHN DRAPER':return 'THE BIG LAD HAS BEEN LAID OFF!';case 'BRAD DAVIS':return 'BRAD DAVIS HAS FAILED HIS OWN SAFETY INSPECTION!';default:return 'EUAN HAS BEEN EUAN-HANDLED!'}}
+function introQuip(f){return ({'ANTH WEIR':'THE IRON WEIR! ZERO EMOTIONS AND ONE VERY BAD ATTITUDE!','OWEN STRINGER':'OWEN STRINGER! HE LOOKS A LITTLE TENSE!','MARTY ALLEN':'MARTY ALLEN! HE IS CHARGING ADMISSION TO HIS OWN PARTY!','JOHN DRAPER':'THE BIG LAD! HR WOULD LIKE A WORD WITH THIS MAN!','BRAD DAVIS':'BRAD DAVIS! THE CSCS CARD COLLECTOR IS HERE!'})[f.bio.name]||'THE EUANATOR IS READY!'}
+function specialQuip(f){return ({'ANTH WEIR':"ANTH WEIR GOES FOR THE EMOTIONLESS BOMB! HE'S STILL NOT SMILING!",'MARTY ALLEN':"MARTY ALLEN GOES FOR MONEY TALKS! THAT'S AN EXPENSIVE LANDING!",'OWEN STRINGER':'STRING THEORY SUPLEX! THE MAN IS COMPLETELY UNRAVELLING!','JOHN DRAPER':'THE DRAPER DROP! SOMEBODY CALL AN AIR-CON ENGINEER!','BRAD DAVIS':'THE CARD CONFISCATOR! BRAD FAILED THE RISK ASSESSMENT!','EUAN':'THE EUANATOR! SOMEBODY PHONE HIS MAM!'})[f.bio.name]}
+
+const fighters=[
+{first:'EUAN',last:'THE UNSTOPPABLE',name:'EUAN',primary:'#20d5ed',secondary:'#0b6d9c',skin:'#f4ba8a',hair:'#5a2b1a',accent:'#ffffff',move:'THE EUANATOR',weight:1.03},
+{first:'ANTH',last:'THE IRON WEIR',name:'ANTH WEIR',primary:'#cb4bdf',secondary:'#54227e',skin:'#d6a07f',hair:'#2d2021',accent:'#ffdb7d',move:'THE EMOTIONLESS BOMB',weight:1.10},
+{first:'OWEN',last:'THE STRING SLINGER',name:'OWEN STRINGER',primary:'#6aed5b',secondary:'#236a4a',skin:'#e8b291',hair:'#5b3722',accent:'#faff8a',move:'STRING THEORY SUPLEX',weight:.96},
+{first:'MARTY',last:'THE PARTY STARTER',name:'MARTY ALLEN',primary:'#f75c96',secondary:'#85266e',skin:'#c58b66',hair:'#302725',accent:'#ffe8c4',move:'MONEY TALKS',weight:1.05},
+{first:'JOHN',last:'THE BIG LAD',name:'JOHN DRAPER',primary:'#28293e',secondary:'#0e1021',skin:'#d8a17f',hair:'#28201e',accent:'#ffca48',move:'THE DRAPER DROP',weight:1.23},
+{first:'BRAD',last:'THE CSCS ENFORCER',name:'BRAD DAVIS',primary:'#fa9d25',secondary:'#443557',skin:'#e5aa82',hair:'#222027',accent:'#fff4a9',move:'THE CARD CONFISCATOR',weight:1.27}
+];
+const makeFighter=(bio,x,isPlayer)=>({bio,x,y:0,vy:0,vx:0,face:isPlayer?1:-1,health:100,maxHealth:100,stamina:100,special:isPlayer?22:0,climb:0,corner:0,dive:0,diveTotal:0,diveStart:0,diveTarget:0,diveHit:false,groin:0,recovering:0,attack:0,attackDuration:0,attackType:'',attackLanded:false,hitTimer:0,invuln:0,knock:0,ko:false,guard:false,combo:0,lastHitAt:-10,AIcool:1.15,AIblock:0,step:0,breath:0,isPlayer,drag:0,stun:0,roar:0});
+function sfx(f=250,d=.1,type='square',gain=.055,end=f*.5){if(!soundOn)return;try{if(!audio)audio=new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();let osc=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;osc.type=type;osc.frequency.setValueAtTime(f,t);osc.frequency.exponentialRampToValueAtTime(Math.max(20,end),t+d);g.gain.setValueAtTime(gain,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);osc.connect(g).connect(audio.destination);osc.start(t);osc.stop(t+d+.006)}catch(e){}}
+function crowdRoar(){sfx(82,.6,'sawtooth',.035,45);setTimeout(()=>sfx(190,.32,'triangle',.03,120),140)}
+function announce(s,seconds=2){announcer=s;announceTimer=seconds}
+function openPanel(html){panel.innerHTML=html;overlay.classList.remove('hidden')}
+function showInstallHelp(){openPanel(`<div class="eyebrow">IPHONE EDITION</div><div class="trophy">📱🥊</div><div class="logo"><span>INSTALL</span><br>THE MADNESS!</div><p class="desc">Open this game in <b>Safari</b> (not the WhatsApp built-in browser). Tap the <b>Share</b> button, then <b>Add to Home Screen</b>. Turn on <b>Open as Web App</b> if shown, and tap <b>Add</b>. The championship icon will appear on your iPhone!</p><button class="action" id="installBack">BACK TO THE RING</button><p class="tiny">Totally free • No App Store • No adverts</p>`);document.getElementById('installBack').onclick=menu}
+function menu(){scene='menu';round=0;score=0;openPanel(`<div class="eyebrow">★ THE MAIN EVENT ★</div><div class="trophy">🏆</div><div class="logo">EUAN'S<br><span>WRESTLING</span><br>CHAMPIONSHIP</div><div class="tagline">GO! • BELT OR NOTHING</div><p class="desc">Fight Anth Weir, Owen Stringer, Marty Allen and John Draper, then secret final boss Brad Davis in his flash car. Land massive slams and pin them for the 3-count. Climb the corner ropes and FROG SPLASH! Charge lightning for <b>THE EUANATOR!</b> There's even a naughty LOW BLOW.</p><button class="action" id="startGame">ENTER THE RING ⚡</button><div><button class="action secondary" id="iphoneInstall" style="margin-top:14px;font-size:15px;min-width:230px">📲 INSTALL ON IPHONE</button></div><div class="keys"><b>← → / A D MOVE</b><b>W JUMP / CLIMB / SPLASH</b><b>U LOW BLOW</b><b>J HIT</b><b>K SLAM</b><b>L PIN</b><b>I FINISH</b><b>SHIFT BLOCK</b></div><p class="tiny">Playable on PC and touchscreen • A comedy arcade game • Names are for fun, not real likenesses</p>`);document.getElementById('startGame').onclick=()=>startRound(1);document.getElementById('iphoneInstall').onclick=showInstallHelp}
+function startRound(n){round=n;player=makeFighter(fighters[0],375,true);foe=makeFighter(fighters[n],920,false);pinState=null;particles=[];texts=[];confetti=[];matchSeconds=0;scene='entrance';commentaryText='';commentaryTimer=0;commentaryCool=0;roundDelay=n===5?12.8:n===1?7.8:n===4?6.6:4.6;entranceLength=roundDelay;player.x=75;foe.x=1250;announce(`ROUND ${round} — EUAN VS ${foe.bio.name}!`,3);overlay.classList.add('hidden');shout(introQuip(foe),3.8,true);if(n===4){sfx(77,1.2,'sawtooth',.10,37);setTimeout(()=>sfx(98,.85,'square',.05,47),740);setTimeout(()=>sfx(160,.8,'sawtooth',.085,60),1850);setTimeout(()=>sfx(72,1,'sawtooth',.075,35),2980)}else{sfx(440,.18,'triangle',.07,750);sfx(650,.32,'triangle',.055,320)}}
+function resetMatch(){player=makeFighter(fighters[0],375,true);foe=makeFighter(fighters[round],920,false);pinState=null;scene='entrance';roundDelay=round===5?12.8:round===1?7.8:round===4?6.6:4.6;entranceLength=roundDelay;player.x=75;foe.x=1250;announce('REMATCH! DING DING!',2.0);overlay.classList.add('hidden')}
+function winner(who){shout(pun(who===player?foe:player),3.5,true);scene='roundOver';pinState=null;if(who===player){score++;crowdRoar();confetti=Array.from({length:95},(_,i)=>({x:random(0,W),y:random(-320,20),vx:random(-40,40),vy:random(50,180),rot:random(0,7),sz:random(4,10),colour:['#ffdf68','#ff5999','#6cf4f5','#fff'][i%4]}));if(round===5){scene='champion';openPanel(`<div class="eyebrow">AND NEEEEEW...</div><div class="trophy">🏆👑🏆</div><div class="logo"><span>EUAN</span><br>IS THE CHAMP!</div><div class="tagline">THE UNDISPUTED CHAMPION</div><p class="desc">Five challengers. Five victories. Both John Draper and Brad Davis have fallen. The EUANATOR is the undisputed champion!</p><button class="action" id="again">DEFEND THE BELT ↻</button><p class="tiny">Cue the victory lap and the outrageous entrance music.</p>`);document.getElementById('again').onclick=()=>startRound(1)}else{openPanel(`<div class="eyebrow">1 • 2 • 3!</div><div class="trophy">🏅</div><div class="logo"><span>EUAN WINS!</span></div><div class="tagline">${['','ANTH HAS FELT... ABSOLUTELY NOTHING!','OWEN HAS BEEN UNSTRUNG!','MARTY IS OFFICIALLY BANKRUPT!','THE BIG LAD HAS BEEN LAID OFF!'][round]}</div><p class="desc">${round} of 5 challengers defeated. The championship belt is getting closer...</p><button class="action" id="next">NEXT CHALLENGER →</button>`);document.getElementById('next').onclick=()=>startRound(round+1)}}else{scene='defeat';openPanel(`<div class="eyebrow">THE REF COUNTS THREE...</div><div class="trophy">💥</div><div class="logo">OH <span>NOOO!</span></div><div class="tagline">${foe.bio.last} STOLE THE PIN</div><p class="desc">Euan lost the round, but legends don't quit. Block, wear them down, slam, and pin while they're on the mat!</p><button class="action" id="retry">REMATCH! ↻</button><button class="action secondary" id="main" style="margin-top:13px">MAIN MENU</button>`);document.getElementById('retry').onclick=resetMatch;document.getElementById('main').onclick=menu}}
+
+function getCorner(f){return f.x<ringLeft+92?ringLeft+5:f.x>ringRight-92?ringRight-5:0}
+function beginDive(f){
+ if(f.climb<=0||f.dive>0)return false;
+ const opp=f===player?foe:player;
+ f.dive=1.30;f.diveTotal=1.30;f.diveStart=f.x;f.diveTarget=clamp(opp.x,ringLeft+62,ringRight-62);f.climb=0;f.y=0;f.vx=0;f.face=f.diveTarget>=f.x?1:-1;
+ shout('FROG SPLASH! AIRBORNE AND ENTIRELY UNINSURED!',2.8,true);sfx(560,.42,'sawtooth',.05,160);return true
+}
+function doMove(f,kind){
+ if(scene!=='fight'||pinState||f.dive>0)return false;
+ const opp=f===player?foe:player,dist=Math.abs(f.x-opp.x);
+ if(kind==='jump'){
+   if(f.climb>0)return beginDive(f);
+   if(f.knock>0||f.hitTimer>.12||f.groin>0)return false;
+   const corner=getCorner(f);
+   if(corner&&f.y<1&&f.attack<=0&&f.stamina>=12){f.corner=corner;f.climb=1;f.x=corner;f.vx=0;f.vy=0;f.stamina-=12;shout('THE TOP ROPE! WHAT COULD POSSIBLY GO WRONG?',2.4,true);sfx(400,.2,'triangle',.05,700);return true}
+   if(f.y<1&&f.stamina>=8&&f.attack<=0){f.vy=590;f.stamina-=8;sfx(260,.1,'sine',.035,440);return true}return false;
+ }
+ if(f.climb>0)return false;
+ if(f.knock>0||f.hitTimer>.15||f.attack>0||f.stun>0||f.groin>0||f.recovering>0)return false;
+ f.face=opp.x>=f.x?1:-1;
+ if(kind==='pin'){if(opp.knock>.15&&dist<140&&f.y<1){beginPin(f,opp);return true}if(f.isPlayer)shout('GET CLOSE TO A DOWNED WRESTLER TO PIN!',1.5,true);return false}
+ const costs={punch:7,kick:18,grapple:22,special:0};
+ if(kind==='special'){if(f.special<100){if(f.isPlayer)shout('CHARGE THE LIGHTNING METER FOR YOUR FINISHER!',1.7,true);return false}if(dist>168||opp.knock>0){if(f.isPlayer)shout('GET CLOSE TO A STANDING OPPONENT FIRST!',1.5,true);return false}}
+ if(f.stamina<(costs[kind]||0)){if(f.isPlayer)shout('OUT OF STAMINA! CATCH YOUR BREATH!',1.4,true);return false}
+ f.attackType=kind;f.attackDuration=kind==='special'?1.13:kind==='grapple'?.55:kind==='kick'?.49:.3;f.attack=f.attackDuration;f.attackLanded=false;f.stamina-=costs[kind]||0;
+ if(kind==='special'){f.special=0;f.roar=1.15;shakes=9;sfx(160,.35,'sawtooth',.09,520);shout(specialQuip(f),3.0,true)}
+ else if(kind==='kick'){shout('OH NO! HE HAS AIMED BELOW THE BELT!',1.9,true);sfx(280,.14,'square',.03,92)}
+ else if(kind==='grapple')sfx(210,.13,'triangle',.045,130);
+ else sfx(320,.07,'square',.018,200);
+ return true
+}
+
+
+function damage(att,def,kind){
+ const base=kind==='frog'?34:kind==='special'?43:kind==='grapple'?21:kind==='kick'?15:9;
+ const blocked=def.guard&&def.stamina>8&&kind!=='special'&&kind!=='frog'&&kind!=='kick';
+ def.health=clamp(def.health-(blocked?Math.ceil(base*.2):base),0,100);
+ if(blocked){def.stamina=clamp(def.stamina-12,0,100);sfx(190,.12,'triangle',.07,140);announce('BLOCKED!',.7)}
+ else{
+  def.groin=kind==='kick'?1.35:0;def.hitTimer=kind==='kick'?.34:kind==='punch'?.26:.56;def.stun=kind==='special'?.36:kind==='kick'?.3:.12;
+  def.vx=att.face*(kind==='special'?450:kind==='frog'?120:kind==='grapple'?390:kind==='kick'?100:195);
+  sfx(kind==='kick'?440:kind==='frog'?95:kind==='special'?95:150,kind==='special'?.33:.18,'sawtooth',kind==='special'?.11:.07,55);
+  shakes=kind==='frog'?22:kind==='special'?18:kind==='grapple'?10:kind==='kick'?7:4;flash=kind==='special'||kind==='frog'?.18:.045;
+  att.special=clamp(att.special+(kind==='punch'?14:kind==='grapple'?24:kind==='kick'?10:8),0,100);
+  if(time-att.lastHitAt<1.7)att.combo++;else att.combo=1;att.lastHitAt=time;
+  if(att.isPlayer&&att.combo>=3&&kind==='punch')announce(att.combo+' HIT COMBO!',1);
+  if(kind==='grapple'||kind==='special'||kind==='frog'||def.health<=0){
+   def.knock=kind==='special'?3.9:kind==='frog'?3.6:kind==='grapple'?2.6:2.9;def.ko=def.health<=0;def.y=0;def.vy=0;def.attack=0;def.stun=0;def.groin=0;
+   if(kind==='special'){shout('THAT FINISHER WAS ABSOLUTELY DISGUSTING!',2.5,true);announce(def.bio.name+' GOT FLATTENED!',1.5)}
+   else if(kind==='frog'){shout('THE FROG SPLASH CONNECTS! THE RING HAS FILED A COMPLAINT!',2.8,true);announce('FROG SPLASH!',2)}
+   else if(kind==='grapple'&&Math.random()<.5)shout('HUGE SLAM! YOU HEARD THAT IN THE NEXT POSTCODE!',2);
+   else announce('HUGE SLAM!',1.4);
+  }
+  else if(kind==='kick'){shout(quips.kick[Math.floor(random(0,quips.kick.length))],2.6,true);announce('LOW BLOW!',1.4);refWarning=2.5}
+  else if(Math.random()<.16)shout(quips.hit[Math.floor(random(0,quips.hit.length))],1.9);
+  burst((att.x+def.x)/2,456,kind==='frog'||kind==='special'?35:kind==='grapple'?16:10,kind==='kick'?'#ffc066':kind==='special'?'#ffdd6b':'#ffffff');
+ }
+ if(def.health<=0){def.knock=Math.max(def.knock,4.1);def.ko=true}
+ if(att.isPlayer&&(kind==='special'||kind==='frog'))crowdRoar()
+}
+
+function burst(x,y,n,color){for(let i=0;i<n;i++)particles.push({x,y,vx:random(-350,350),vy:random(-280,90),life:random(.2,.8),max:1,size:random(2,8),col:color})}
+
+function beginPin(att,def){
+ if(pinState||scene!=='fight'||def.knock<=0)return;
+ att.attack=0;att.guard=false;def.attack=0;att.vx=0;def.vx=0;
+ pinState={att,def,count:0,next:.72,escape:0};def.knock=Math.max(def.knock,3.2);
+ shout('KEVIN DAVIS GOES DOWN FOR THE COUNT!',2.5,true);sfx(300,.2,'triangle',.07,120)
+}
+function endPin(p){
+ p.def.knock=.55;p.def.ko=false;p.def.recovering=0;p.def.invuln=1.2;p.def.hitTimer=0;p.def.groin=0;
+ p.att.x=clamp(p.att.x+(p.def.x<p.att.x?65:-65),ringLeft,ringRight);pinState=null;
+ shout(quips.recover[Math.floor(random(0,quips.recover.length))],2.4,true)
+}
+function handlePin(dt){
+ if(!pinState)return;
+ const p=pinState,h=p.def.health;
+ if(p.att===foe){if(pressed.punch||pressed.grapple||pressed.pin||pressed.jump||pressed.special||pressed.kick){p.escape+=25;sfx(270,.05,'sine',.015,350)}p.escape+=dt*(h>40?20:h>15?10:4)}
+ else p.escape+=dt*(h>60?39:h>35?23:h>15?11:h>0?5:2);
+ if(p.escape>=100){announce('KICK OUT!',1.2);sfx(650,.23,'triangle',.07,330);endPin(p);return}
+ p.next-=dt;
+ if(p.next<=0){p.next=.9;p.count++;shakes=4;announce(p.count===3?'THREE!!!':p.count+'!!!',.8);sfx(110,.19,'sawtooth',.09,55);if(p.count===3){winner(p.att);return}}
+}
+
+function ai(dt){if(!foe||!player||foe.knock||foe.hitTimer||foe.stun||foe.recovering||foe.groin||foe.climb||foe.dive||pinState)return;foe.AIcool-=dt;foe.AIblock=Math.max(0,foe.AIblock-dt);foe.guard=foe.AIblock>0;const dist=Math.abs(player.x-foe.x);foe.face=player.x>=foe.x?1:-1;
+if(player.knock>0&&dist<135&&foe.AIcool<=0){if(player.health<45||Math.random()<.5){doMove(foe,'pin');foe.AIcool=1.2;return}}
+if(player.climb>0&&foe.AIcool<=0){foe.vx=foe.face*270;foe.AIcool=.6;}if(player.attack>.04&&dist<145&&Math.random()<dt*.85&&foe.stamina>20){foe.AIblock=random(.4,.9);foe.guard=true}
+if(foe.attack>0)return;if(dist>88){foe.vx=foe.face*(round===4?224:round===3?205:round===2?194:182);foe.step+=dt*14;foe.guard=false}else if(foe.AIcool<=0){const r=Math.random();let kind=r<.23?'grapple':r>.87?'kick':'punch';if(round>=2&&foe.special>=100&&r>.62)kind='special';if(doMove(foe,kind))foe.AIcool=random(round===4?.56:round===3?.7:.86,round===4?.98:round===3?1.15:1.43)}else if(dist<65&&Math.random()<dt*1.4)foe.vx=-foe.face*110}
+
+function updateFighter(f,dt){
+ if(!f)return;
+ f.invuln=Math.max(0,f.invuln-dt);f.hitTimer=Math.max(0,f.hitTimer-dt);f.stun=Math.max(0,f.stun-dt);f.groin=Math.max(0,f.groin-dt);f.roar=Math.max(0,f.roar-dt);f.breath+=dt*2;
+ f.stamina=clamp(f.stamina+dt*(f.guard?5:13),0,100);
+ if(f.climb>0){f.vy=0;f.y=0;f.vx=0;f.x=f.corner;return}
+ if(f.dive>0){
+  f.dive=Math.max(0,f.dive-dt);let p=clamp(1-f.dive/f.diveTotal,0,1);
+  f.x=clamp(f.diveStart+(f.diveTarget-f.diveStart)*p,ringLeft,ringRight);f.y=260*Math.sin(Math.PI*Math.pow(p,.75))+38*(1-p);
+  if(f.dive===0){f.y=0;let opp=f===player?foe:player;
+   if(Math.abs(f.x-opp.x)<132&&opp.invuln<=0){damage(f,opp,'frog');f.knock=.65;f.invuln=.7}
+   else {f.knock=1.7;f.health=Math.max(1,f.health-8);shout(quips.miss[Math.floor(random(0,quips.miss.length))],3,true);announce('FROG FLOP!',1.5);shakes=12;burst(f.x,468,18,'#ffeaa2');sfx(110,.27,'sawtooth',.055,57)}
+  }return;
+ }
+ f.y+=f.vy*dt;f.vy-=1700*dt;if(f.y<0){f.y=0;f.vy=0}
+ if(f.knock>0){f.knock=Math.max(0,f.knock-dt);f.guard=false;f.attack=0;f.vx*=Math.exp(-dt*10);
+  if(f.knock===0){f.ko=false;f.recovering=.48;f.invuln=1;f.hitTimer=0;f.stun=0;f.groin=0;shout(quips.recover[Math.floor(random(0,quips.recover.length))],1.9)}}
+ else if(f.recovering>0){f.recovering=Math.max(0,f.recovering-dt);f.vx=0}
+ else if(f.attack>0){f.attack=Math.max(0,f.attack-dt);const progress=1-f.attack/f.attackDuration;
+  const hitAt=f.attackType==='punch'?.43:f.attackType==='grapple'?.53:f.attackType==='kick'?.56:.74;
+  if(progress>=hitAt&&!f.attackLanded){f.attackLanded=true;const opp=f===player?foe:player,reach=f.attackType==='punch'?137:f.attackType==='grapple'?115:f.attackType==='kick'?140:170;
+   if(opp.knock<=0&&opp.climb<=0&&opp.invuln<=0&&Math.abs(f.x-opp.x)<reach&&Math.abs(f.y-opp.y)<110&&((opp.x-f.x)*f.face>=-40)){
+    damage(f,opp,f.attackType);if(f.attackType==='special')f.x=clamp(f.x+f.face*19,ringLeft,ringRight)
+   }else if(f.attackType==='punch')sfx(280,.08,'sine',.013,180);
+   else if(f.attackType==='special'&&f.isPlayer)shout('HE MISSED THE FINISHER! IT LANDED IN THE VOID!',2.2,true)
+  }f.vx*=Math.exp(-dt*8)
+ }else{f.attack=0;f.vx*=Math.exp(-dt*11)}
+ f.x=clamp(f.x+f.vx*dt,ringLeft,ringRight)
+}
+
+const ringLeft=172,ringRight=1107;
+function update(dt){time+=dt;commentaryTimer=Math.max(0,commentaryTimer-dt);commentaryCool=Math.max(0,commentaryCool-dt);refWarning=Math.max(0,refWarning-dt);shakes=Math.max(0,shakes-dt*36);flash=Math.max(0,flash-dt*2);announceTimer=Math.max(0,announceTimer-dt);for(const p of particles){p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=700*dt}particles=particles.filter(p=>p.life>0);for(const q of confetti){q.x+=q.vx*dt;q.y+=q.vy*dt;q.rot+=dt*4;if(q.y>H+50)q.y=-50}
+if(scene==='entrance'){roundDelay=Math.max(0,roundDelay-dt);let t=entranceLength-roundDelay;player.x=clamp(45+Math.min(t,3.8)*91,45,390);player.step+=dt*(t<3.8?12:0);foe.x=round===5?(t<5.65?1250:clamp(1250-(t-5.65)*160,920,1250)):clamp(1270-Math.max(0,t-1.1)*115,920,1270);if(t>5&&round===5)foe.step+=dt*10;else if(round!==5&&t>1.1)foe.step+=dt*9;if(roundDelay===0){scene='fight';player.x=375;foe.x=920;announce('DING DING! FIGHT!',1.2);shout(round===5?'EUAN VS BRAD DAVIS! LOSER HANDS OVER THE CSCS CARD!':'THE BELL HAS GONE! LET THE NONSENSE BEGIN!',3,true);sfx(700,.24,'sine',.075,900)}return}if(scene!=='fight')return;matchSeconds+=dt;if(matchSeconds>9&&Math.random()<dt*.065)shout(quips.intro[Math.floor(random(0,quips.intro.length))],2.3);
+if(pinState){handlePin(dt);for(let k in pressed)delete pressed[k];if(pinState){player.breath+=dt*2;foe.breath+=dt*2;}return}
+if(player.knock===0&&player.attack<=0&&player.hitTimer===0&&player.stun===0&&player.groin===0&&player.climb===0&&player.dive===0&&player.recovering===0){player.guard=held.block&&player.stamina>0;let direction=(held.right?1:0)-(held.left?1:0);if(direction){player.vx=direction*(player.guard?140:265);player.face=direction;player.step+=dt*16}else player.vx*=Math.exp(-dt*12)}else player.guard=false;
+if(pressed.jump)doMove(player,'jump');if(pressed.kick)doMove(player,'kick');if(pressed.punch)doMove(player,'punch');if(pressed.grapple)doMove(player,'grapple');if(pressed.special)doMove(player,'special');if(pressed.pin)doMove(player,'pin');for(let k in pressed)delete pressed[k];
+ai(dt);updateFighter(player,dt);updateFighter(foe,dt);
+if(Math.abs(player.x-foe.x)<68&&player.knock<=0&&foe.knock<=0&&player.climb<=0&&foe.climb<=0&&player.dive<=0&&foe.dive<=0){let push=(68-Math.abs(player.x-foe.x))*.48;player.x-=push*(player.x<=foe.x?1:-1);foe.x+=push*(player.x<=foe.x?1:-1)}
+player.x=clamp(player.x,ringLeft,ringRight);foe.x=clamp(foe.x,ringLeft,ringRight);
+if(player.knock>0&&foe.knock>0&&Math.abs(player.x-foe.x)<90)foe.x+=25*dt;
+if((player.health<=0||foe.health<=0)&&matchSeconds>190){winner(player.health>foe.health?player:foe)}}
+const stars=Array.from({length:60},(_,i)=>({x:(i*187+39)%1280,y:(i*71+19)%350,size:1+(i%4),phase:i*.8}));
+function poly(points,fill,stroke=null,w=1){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.lineWidth=w;ctx.strokeStyle=stroke;ctx.stroke()}}
+function roundRect(x,y,w,h,r,fill,stroke=null,sw=1){if(w<=0||h<=0)return;ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=sw;ctx.stroke()}}
+function label(txt,x,y,size,col='#fff',align='center',stroke='#15102a',width=5){ctx.font=`900 italic ${size}px Impact,Arial Black,sans-serif`;ctx.textAlign=align;ctx.textBaseline='middle';ctx.lineJoin='round';ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.strokeText(txt,x,y);ctx.fillStyle=col;ctx.fillText(txt,x,y)}
+function drawBackground(){let grad=ctx.createLinearGradient(0,0,0,720);grad.addColorStop(0,'#130b27');grad.addColorStop(.52,'#352253');grad.addColorStop(1,'#080b1d');ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+for(let i=0;i<6;i++){const x=140+i*207+Math.sin(time*.2+i)*28;let ray=ctx.createLinearGradient(x,10,x+110,470);ray.addColorStop(0,i%2?'#ff428d78':'#57c7fd66');ray.addColorStop(1,'#2b234400');poly([[x,25],[x-160,445],[x+210,445]],ray)}
+ctx.fillStyle='#060713';ctx.fillRect(0,327,W,180);for(const s of stars){ctx.globalAlpha=.25+.35*(.5+.5*Math.sin(time*2+s.phase));ctx.fillStyle=s.phase%3<1?'#ff4aa1':'#b0f8ff';ctx.fillRect(s.x,s.y,s.size*1.5,s.size*1.2)}ctx.globalAlpha=1;
+for(let i=0;i<27;i++){let x=i*48,sh=50+Math.sin(i*16+time*.85)*15;ctx.fillStyle=i%2?'#171026':'#21102b';ctx.beginPath();ctx.arc(x+21,390-sh,14,0,TAU);ctx.fill();ctx.fillRect(x+8,388-sh,25,70);ctx.strokeStyle=i%3?'#412355':'#5b3b6a';ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(x+9,407-sh);ctx.lineTo(x+random(2,40),365-sh);ctx.stroke()}
+roundRect(395,70,490,112,17,'#201134','#a85ef9',4);roundRect(411,84,458,85,12,'#0b0925','#ffcc51',2);label("EUAN'S WRESTLING",640,114,49,'#ffda69');label('CHAMPIONSHIP  •  GO!',640,151,24,'#67f7ff');
+for(let i=0;i<12;i++){let x=50+i*112;let bright=(Math.sin(time*2.4+i*2.2)+1)/2;ctx.fillStyle=i%2?`rgba(246,61,149,${bright*.65})`:`rgba(95,245,251,${bright*.55})`;ctx.fillRect(x,10,34,12)}
+}
+function drawRing(){const floorY=507;poly([[113,425],[1154,425],[1231,557],[49,557]],'#d5dfec','#e7ebff',6);poly([[137,432],[1134,432],[1199,536],[79,536]],'#637aa4','#d7f0ff',3);poly([[170,442],[1094,442],[1158,521],[126,521]],'#9bb0d4');
+for(let i=0;i<14;i++){const x=150+i*75;ctx.strokeStyle='#b4c4e333';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,440);ctx.lineTo(x+28,527);ctx.stroke()}
+ctx.strokeStyle='#7c8eac';ctx.lineWidth=11;ctx.beginPath();ctx.moveTo(73,539);ctx.lineTo(1210,539);ctx.stroke();poly([[65,537],[1214,537],[1201,581],[80,581]],'#11162a','#ffb932',5);for(let i=0;i<11;i++)label('★',150+i*100,559,21,i%2?'#ffce4c':'#6de4f6');
+for(let k=0;k<3;k++){const y=404+k*33;ctx.strokeStyle=['#eb56a7','#f0f4ff','#5bdffc'][k];ctx.lineWidth=6;ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=8;ctx.beginPath();ctx.moveTo(121,y);ctx.bezierCurveTo(440,y-12,850,y-12,1171,y);ctx.stroke();ctx.shadowBlur=0}
+for(let x of [114,1176]){roundRect(x-12,323,24,237,7,'#202945','#0c0e17',4);for(let k=0;k<3;k++)roundRect(x-18,396+k*33,37,16,5,'#efcb4b','#fcf2bd',2);roundRect(x-19,319,39,16,6,'#ffce56')}
+}
+function drawForegroundRopes(){for(let k=0;k<2;k++){let y=525+k*24;ctx.lineWidth=6;ctx.strokeStyle=k===0?'#fff6dc':'#ed599b';ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=7;ctx.beginPath();ctx.moveTo(119,y+7);ctx.quadraticCurveTo(640,y+19,1170,y+7);ctx.stroke();ctx.shadowBlur=0}}
+
+function drawRef(){
+ const watchingPin=!!pinState,angry=refWarning>0;
+ const x=watchingPin?clamp((pinState.att.x+pinState.def.x)/2+80,220,1025):clamp(650+Math.sin(time*.6)*38,420,880);
+ const y=watchingPin?459:410;
+ ctx.save();ctx.translate(x,y);
+ const bend=watchingPin?(.24+Math.abs(Math.sin(time*4))*.10):0;
+ ctx.rotate(bend);
+ ctx.fillStyle='#0007';ctx.beginPath();ctx.ellipse(0,48,40,10,0,0,TAU);ctx.fill();
+ // Pudgy trousers and scuffed black boots
+ ctx.strokeStyle='#171522';ctx.lineWidth=22;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-18,4);ctx.lineTo(-17,43);ctx.moveTo(17,4);ctx.lineTo(19,43);ctx.stroke();
+ roundRect(-38,34,39,15,5,'#121019','#0a0911',2);roundRect(5,34,42,15,5,'#121019','#0a0911',2);
+ // Round body and proper stripes
+ roundRect(-42,-55,84,85,24,'#eeeef0','#181526',5);
+ for(let i=0;i<6;i++)roundRect(-32+i*11,-51,5,76,2,'#24232c');
+ roundRect(-14,-40,28,23,4,'#eeeeee','#17131b',2);
+ label('KD',0,-27,14,'#ffcb55','center','#151019',2);
+ // Soft neck, clean shaven cheeks, short black hair and spectacles
+ roundRect(-11,-69,22,20,7,'#ddb28d');
+ ctx.fillStyle='#e5b995';ctx.beginPath();ctx.ellipse(0,-94,32,36,0,0,TAU);ctx.fill();
+ ctx.strokeStyle='#8d6559';ctx.lineWidth=2;ctx.stroke();
+ ctx.fillStyle='#1c1720';ctx.beginPath();ctx.ellipse(0,-115,33,16,0,Math.PI,Math.PI*2);ctx.fill();
+ for(let xx of [-14,14]){roundRect(xx-13,-104,25,18,7,'#c5ecff33','#151722',3);ctx.fillStyle='#1c1720';ctx.fillRect(xx-4,-96,4,5)}
+ ctx.strokeStyle='#10111b';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-3,-98);ctx.lineTo(3,-98);ctx.moveTo(-28,-98);ctx.lineTo(-34,-100);ctx.moveTo(26,-98);ctx.lineTo(34,-100);ctx.stroke();
+ ctx.strokeStyle='#92675d';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-7,-77);ctx.quadraticCurveTo(0,-74,7,-77);ctx.stroke();
+ // Arms gesturing at chaos / slapping mat during counts
+ ctx.strokeStyle='#e8bd98';ctx.lineWidth=17;ctx.lineCap='round';ctx.beginPath();
+ ctx.moveTo(-40,-34);ctx.lineTo(watchingPin?-68:-65,watchingPin?6:angry?-65:-10);
+ ctx.moveTo(40,-34);ctx.lineTo(watchingPin?48:angry?69:60,watchingPin?35+Math.sin(time*7)*13:angry?-66:-8);ctx.stroke();
+ ctx.fillStyle='#f4c39f';ctx.beginPath();ctx.arc(watchingPin?48:angry?69:60,watchingPin?35+Math.sin(time*7)*13:angry?-66:-8,9,0,TAU);ctx.fill();
+ if(angry&&!watchingPin)label('OI! BELOW THE BELT!',0,-164,19,'#ffda8c');
+ if(watchingPin)label('KEVIN DAVIS - REF',0,-146,15,'#fff5ad');
+ ctx.restore()
+}
+
+function drawWrestler(f){if(!f)return;const x=f.x,y=477-f.y,down=f.knock>0,attacking=f.attack>0,p=f.attackDuration?1-f.attack/f.attackDuration:0;
+ctx.save();ctx.translate(x,y);ctx.scale(f.face,1);if(f.hitTimer>0&&Math.sin(time*48)>0){ctx.globalAlpha=.63}
+ctx.fillStyle='#12112266';ctx.beginPath();ctx.ellipse(0,21+f.y*.13,down?93:42,13,0,0,TAU);ctx.fill();
+if(down){ctx.translate(0,16);ctx.rotate(-1.30);ctx.scale(1.08,.92)}else{let lean=attacking?(f.attackType==='special'?-0.18:p<.6?-.15:.22):f.hitTimer?-.22:0;ctx.rotate(lean+Math.sin(time*2.5+f.breath)*.012)}
+const weight=f.bio.weight;ctx.scale(weight,weight);let step=Math.sin(f.step)*Math.min(1,Math.abs(f.vx)/230);let jump=clamp(f.y/220,0,1);
+// Back arm and legs
+function limb(points,colour,width){ctx.strokeStyle='#281827';ctx.lineWidth=width+7;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(...points[0]);for(let i=1;i<points.length;i++)ctx.lineTo(...points[i]);ctx.stroke();ctx.strokeStyle=colour;ctx.lineWidth=width;ctx.stroke()}
+limb([[-18,-86],[-25+step*11,-49],[-31+step*18,0]],f.bio.skin,19);limb([[13,-88],[17-step*12,-48],[27-step*20,0]],f.bio.skin,20);
+poly([[-43,-67],[-15,-72],[-14,-42],[-26,-36],[-45,-42]],f.bio.secondary,'#1a1730',4);poly([[14,-74],[41,-71],[40,-38],[21,-34],[12,-45]],f.bio.secondary,'#1a1730',4);
+for(let dx of [-32,27]){roundRect(dx-20,-7,37,22,5,'#171528','#07060e',3);roundRect(dx-16,0,30,6,2,f.bio.accent)}
+// Torso, vest and trunks
+poly([[-33,-182],[31,-183],[48,-143],[35,-83],[-34,-83],[-46,-141]],f.bio.skin,'#27192a',5);poly([[-37,-121],[38,-121],[33,-82],[-33,-82]],f.bio.primary,'#181527',5);poly([[-21,-109],[-4,-98],[11,-109],[24,-103],[9,-89],[-18,-90]],f.bio.secondary);label(f.isPlayer?'E':'★',0,-111,24,f.bio.accent,'center','#16213a',2);
+ctx.strokeStyle='#9a564d';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-24,-153);ctx.lineTo(-7,-150);ctx.lineTo(0,-146);ctx.moveTo(23,-153);ctx.lineTo(7,-150);ctx.stroke();
+// arms; attack arm rotates forward
+const fistY=attacking?f.attackType==='special'?-156:f.attackType==='grapple'?-131:-164:-130;const reach=attacking?f.attackType==='special'?103:f.attackType==='grapple'?90:100:43;
+limb([[-37,-169],[-58,-131],[-44,-110]],f.bio.skin,19);limb([[37,-168],[attacking?65:54,-146],[attacking?reach:38,fistY]],f.bio.skin,20);
+roundRect(-54,-119,24,17,5,f.bio.secondary,'#101321',3);roundRect((attacking?reach:38)-12,fistY-10,24,23,6,f.bio.secondary,'#121029',3);
+// Head / ears / hair
+ctx.fillStyle=f.bio.skin;roundRect(-9,-194,18,24,4,f.bio.skin);ctx.beginPath();ctx.ellipse(0,-215,31,38,0,0,TAU);ctx.fill();ctx.strokeStyle='#321f26';ctx.lineWidth=4;ctx.stroke();ctx.fillStyle=f.bio.hair;ctx.beginPath();ctx.ellipse(-3,-238,31,17,.13,Math.PI,TAU);ctx.lineTo(27,-222);ctx.lineTo(9,-243);ctx.fill();if(!f.isPlayer&&f.bio.name==='OWEN STRINGER'){ctx.fillStyle=f.bio.primary;roundRect(-34,-229,68,12,5,f.bio.primary);label('S',0,-225,11,'#132b17')}
+if(!f.isPlayer&&f.bio.name==='JOHN DRAPER'){roundRect(-27,-242,54,10,3,'#ffcc49','#171420',2);roundRect(-26,-201,52,17,8,'#29201d');label('★',0,-109,25,'#ffcf58')}if(!f.isPlayer&&f.bio.name==='MARTY ALLEN'){roundRect(-28,-236,56,10,4,'#f75c96')}if(!f.isPlayer&&f.bio.name==='ANTH WEIR'){roundRect(-24,-197,48,13,6,'#362423')}
+ctx.fillStyle='#271724';ctx.fillRect(-19,-219,11,4);ctx.fillRect(9,-219,11,4);ctx.fillStyle='#fff';ctx.fillRect(-16,-210,7,5);ctx.fillRect(12,-210,7,5);ctx.fillStyle='#29232d';ctx.fillRect(-12,-209,3,4);ctx.fillRect(15,-209,3,4);ctx.strokeStyle='#703d3c';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-8,-192);ctx.quadraticCurveTo(0,-185,10,-193);ctx.stroke();
+if(f.guard){ctx.strokeStyle='#9af8ff';ctx.lineWidth=5;ctx.beginPath();ctx.arc(3,-149,76,-.8,.8);ctx.stroke()}
+if(f.roar>0){ctx.strokeStyle=f.bio.accent;ctx.lineWidth=4;ctx.globalAlpha=f.roar/1.1;ctx.beginPath();ctx.arc(0,-119,83+Math.sin(time*12)*10,0,TAU);ctx.stroke();ctx.globalAlpha=1}
+ctx.restore();if(f.knock>0&&f.health<65){label(f.ko?'💫':'★',x,278+Math.sin(time*6)*5,28,'#ffea65')}}
+function drawHud(){const bar=(x,y,f,flip)=>{roundRect(x,y,437,85,14,'#130e25d9','#5d4c91',2);const nm=flip?'RIGHT':'LEFT';label(f.bio.name,x+20,y+22,f.bio.name.length>10?19:25,'#fff','left');label(f.bio.last,x+20,y+47,13,f.bio.accent,'left');let bx=x+157,by=y+15,bw=258;roundRect(bx,by,bw,23,7,'#321e3f');const hp=clamp(f.health/100,0,1);roundRect(flip?bx+bw*(1-hp):bx,by,Math.max(0,bw*hp),23,7,hp>.45?'#4fe8b6':hp>.2?'#ffd262':'#ff6265');ctx.fillStyle='#fff4';ctx.fillRect(flip?bx+bw*(1-hp)+6:bx+6,by+3,Math.max(0,bw*hp-12),4);label(`${Math.ceil(f.health)}%`,bx+bw/2,by+12,16,'#fff','center','#190f28',3);roundRect(bx,by+35,bw,8,4,'#251737');roundRect(flip?bx+bw*(1-f.stamina/100):bx,by+35,bw*f.stamina/100,8,4,'#6dc9fb');if(f.isPlayer){roundRect(bx,by+51,bw,8,4,'#251737');roundRect(bx,by+51,bw*f.special/100,8,4,'#ffce4e');label(f.special>=100?'⚡ EUANATOR READY!':'⚡ FINISHER',x+415,y+69,15,f.special>=100?'#fff176':'#ffde89','right')}};
+bar(22,18,player,false);bar(821,18,foe,true);roundRect(539,17,201,74,16,'#14102bcf','#b67af9',2);label(`MATCH ${round} / 5`,640,42,22,'#ffdf73');label(`${Math.floor(matchSeconds/60)}:${String(Math.floor(matchSeconds%60)).padStart(2,'0')}`,640,70,23,'#f7f6ff');
+for(let i=1;i<=5;i++){roundRect(532+(i-1)*45,97,36,10,4,i<=score?'#ffd66b':'#3f294e')}
+if(announceTimer>0){ctx.globalAlpha=clamp(announceTimer,.15,1);roundRect(332,593,616,46,13,'#0e0a25dd','#f8bb62',2);label(announcer,640,617,25,'#fce4a0');ctx.globalAlpha=1}
+if(player&&player.climb>0){roundRect(450,170,380,45,12,'#150b29ee','#8df6fa',3);label('TOP ROPE! TAP FROG TO LAUNCH',640,193,23,'#edfbff')}if(refWarning>0&&scene==='fight')label('KEVIN HAS SEEN THAT LOW BLOW!',640,142,21,'#ffb65e');if(pinState){const p=pinState;roundRect(452,165,375,141,17,'#120a2be8','#ffdf67',4);label('PIN FALL!',640,199,35,'#fff2a8');label(`${p.count}`,640,250,69,'#ff5b97');roundRect(502,277,277,10,5,'#39213d');roundRect(502,277,277*(p.escape/100),10,5,'#66f7ef');label(p.def===player?'TAP ANY ACTION TO KICK OUT!':'WILL THEY KICK OUT?!',640,311,16,'#e4f9fa')}
+if(scene==='entrance'&&round>1&&round<4){roundRect(370,220,540,209,20,'#15102fe8','#ffcc61',4);label(`CHALLENGER ${round} OF 5`,640,257,26,'#63eaf8');label(foe.bio.name,640,315,48,'#fff7b9');label(foe.bio.last,640,362,27,foe.bio.accent);label('EUAN vs '+foe.bio.name,640,402,23,'#ff86c7')}
+if(scene==='champion'){label('🏆 CHAMPION 🏆',640,220,66,'#ffdc55')}
+}
+function drawBossEntrance(){if(scene!=='entrance'||round!==4)return;
+const t=entranceLength-Math.max(roundDelay,0);ctx.save();
+// Gold haze and monumental entrance spotlights, revealed over the arena.
+let wash=ctx.createLinearGradient(0,100,0,690);wash.addColorStop(0,'#0c0816ce');wash.addColorStop(.66,'#100c22ad');wash.addColorStop(1,'#0b071066');ctx.fillStyle=wash;ctx.fillRect(0,0,W,H);
+for(let i=0;i<6;i++){let phase=t*.48+i*.9;let topX=120+i*208;let tx=topX+Math.sin(phase)*155;poly([[topX,0],[tx-170,650],[tx+170,650]],i%2?'#fbb53718':'#ffdf6330');}
+// Pyrotechnics rise from the stage in bursts, not permanent static flames.
+for(let side of [-1,1]){let baseX=640+side*445;let burst=Math.max(0,Math.sin(t*4.5+side))*(t>1.2&&t<5.45?1:0);for(let j=0;j<18;j++){let rise=(j*39+t*175)%290;let h=(80+burst*230)*(1-rise/400);let x=baseX+Math.sin(j*1.8+t*3)*(14+rise*.08);ctx.globalAlpha=(.24+.75*burst)*(1-rise/340);ctx.fillStyle=j%4===0?'#fff3af':j%2?'#ff912a':'#ffca45';ctx.beginPath();ctx.ellipse(x,573-rise*.8,4+burst*10,h*.14,0,0,TAU);ctx.fill();}}
+ctx.globalAlpha=1;
+for(let i=0;i<7;i++){ctx.globalAlpha=.17+Math.sin(i*2+t*.6)**2*.17;ctx.fillStyle='#f5ca74';ctx.beginPath();ctx.ellipse(150+i*170+Math.sin(t*.7+i)*32,586+i%3*22,185,40,0,0,TAU);ctx.fill()}ctx.globalAlpha=1;
+let slide=clamp((t-.65)*1.25,0,1),fade=clamp((entranceLength-t)*2.8,0,1);ctx.globalAlpha=slide*fade;
+roundRect(177,163,926,344,15,'#140d28eb','#ffd15d',5);
+roundRect(189,174,902,321,10,null,'#ab7a29',2);
+label('THE ARENA GOES DARK...',640,203,26,'#d9be81');
+label('THE BIG LAD',640,294,83,'#ffd155','center','#170c1b',8);
+label('JOHN DRAPER',640,386,74,'#ffffff','center','#57311e',8);
+label('THE DRAPER DROP  ⚡  FINAL BOSS',640,454,30,'#ffab44');ctx.globalAlpha=1;
+if(t>4.9){let a=clamp((t-4.9)*1.8,0,1);ctx.globalAlpha=a;label('EUAN... YOU ARE IN TROUBLE!',640,558,31,'#fff5b0');ctx.globalAlpha=1}
+ctx.restore()}
+function render(){const skip=document.getElementById('skip');skip.style.display=scene==='entrance'?'block':'none';const aerial=document.getElementById('aerialButton');if(aerial)aerial.textContent=player&&player.climb>0?'FROG!':player&&player.dive>0?'SPLASH':'JUMP';ctx.save();ctx.clearRect(0,0,W,H);ctx.translate(random(-shakes,shakes),random(-shakes,shakes));drawBackground();drawRing();drawRef();if(player&&foe){drawWrestler(player.x<foe.x?foe:player);drawWrestler(player.x<foe.x?player:foe);drawForegroundRopes();for(const p of particles){ctx.globalAlpha=clamp(p.life*2,0,1);ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,TAU);ctx.fill()}ctx.globalAlpha=1;drawHud();drawBossEntrance()}else{drawForegroundRopes();label('THE ARENA AWAITS...',640,457,51,'#ffeeb3')}
+for(const q of confetti){ctx.save();ctx.translate(q.x,q.y);ctx.rotate(q.rot);ctx.fillStyle=q.col;ctx.fillRect(-q.sz/2,-q.sz/3,q.sz,q.sz*.7);ctx.restore()}
+if(flash>0){ctx.globalAlpha=flash*.9;ctx.fillStyle='#fff5c1';ctx.fillRect(0,0,W,H);ctx.globalAlpha=1}ctx.restore()}
+function loop(timestamp){if(!last)last=timestamp;let dt=clamp((timestamp-last)/1000,0,.035);last=timestamp;if(scene!=='paused')update(dt);render();requestAnimationFrame(loop)}
+const keyToInput={KeyU:'kick',ArrowLeft:'left',ArrowRight:'right',KeyA:'left',KeyD:'right',KeyW:'jump',ArrowUp:'jump',KeyJ:'punch',KeyK:'grapple',KeyL:'pin',KeyI:'special',ShiftLeft:'block',ShiftRight:'block',Space:'punch'};
+function inputSet(name,on){if(name==='left'||name==='right'||name==='block'){held[name]=on;return}if(on)pressed[name]=true}
+window.addEventListener('keydown',e=>{if(e.code==='Escape'||e.code==='KeyP'){togglePause();return}if(e.repeat&& !['ArrowLeft','ArrowRight','KeyA','KeyD','ShiftLeft','ShiftRight'].includes(e.code))return;const k=keyToInput[e.code];if(k){e.preventDefault();inputSet(k,true)}});window.addEventListener('keyup',e=>{const k=keyToInput[e.code];if(k){e.preventDefault();inputSet(k,false)}});window.addEventListener('blur',()=>{for(let k in held)held[k]=false});
+for(const btn of document.querySelectorAll('[data-input]')){const k=btn.dataset.input;btn.addEventListener('pointerdown',e=>{e.preventDefault();btn.setPointerCapture(e.pointerId);inputSet(k,true);btn.classList.add('active')});for(const ev of ['pointerup','pointercancel','lostpointercapture'])btn.addEventListener(ev,e=>{e.preventDefault();inputSet(k,false);btn.classList.remove('active')})}
+function togglePause(){if(scene==='fight'||scene==='entrance'){pauseReturn=scene;scene='paused';openPanel(`<div class="eyebrow">HALF-TIME OR SOMETHING</div><div class="logo">TIME <span>OUT!</span></div><p class="desc">The championship can wait while Euan grabs a biscuit.</p><button class="action" id="resume">BACK TO THE FIGHT ▶</button><button class="action secondary" id="quit" style="margin-top:16px">MAIN MENU</button>`);document.getElementById('resume').onclick=()=>{scene=pauseReturn;overlay.classList.add('hidden')};document.getElementById('quit').onclick=menu}else if(scene==='paused'){scene=pauseReturn;overlay.classList.add('hidden')}}
+document.getElementById('skip').addEventListener('click',()=>{if(scene==='entrance'){roundDelay=.01}});pauseBtn.addEventListener('click',togglePause);mute.addEventListener('click',()=>{soundOn=!soundOn;mute.textContent=soundOn?'♫ ON':'♫ OFF'});
+// Gamepad controls (Xbox / PlayStation), with edge detection for attacks.
+let oldPad={};function gamepads(){let pads=navigator.getGamepads?.();const gp=pads&&Array.from(pads).find(x=>x);if(!gp)return;let x=gp.axes[0]||0;held.left=x<-.22||!!gp.buttons[14]?.pressed;held.right=x>.22||!!gp.buttons[15]?.pressed;held.block=!!gp.buttons[4]?.pressed;const mapping={0:'punch',1:'grapple',2:'pin',3:'special',5:'jump',7:'kick'};for(const [i,name] of Object.entries(mapping)){let on=!!gp.buttons[+i]?.pressed;if(on&&!oldPad[i])pressed[name]=true;oldPad[i]=on}if(gp.buttons[9]?.pressed&&!oldPad.start){if(scene==='menu')startRound(1);else if(scene==='paused')togglePause()}oldPad.start=!!gp.buttons[9]?.pressed}
+const originalUpdate=update;update=function(dt){gamepads();originalUpdate(dt)};menu();requestAnimationFrame(loop);
+})();
+</script><script>if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(err=>console.warn('Offline installation not available:',err)));}</script></body></html>
+
+[executed on device: JohnDraper (55ed90b1-0849-45c1-94ab-f3994eae576a)]
+
+[executed on device: JohnDraper (55ed90b1-0849-45c1-94ab-f3994eae576a)]
+
+[executed on device: JohnDraper (55ed90b1-0849-45c1-94ab-f3994eae576a)]

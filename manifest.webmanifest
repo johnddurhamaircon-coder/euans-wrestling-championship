@@ -1,0 +1,30 @@
+{
+  "id": "./",
+  "name": "Euan's Wrestling Championship GO!",
+  "short_name": "Euan's Wrestling",
+  "description": "Ridiculous arcade wrestling — The Euanator takes on Anth Weir, Owen Stringer, Marty Allen, John Draper and Brad Davis.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#100b24",
+  "theme_color": "#100b24",
+  "categories": [
+    "games",
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
