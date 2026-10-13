@@ -1,0 +1,136 @@
+name: Build Euan Wrestling Android APK
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - icons/icon-192.png
+      - .github/workflows/build-android-apk.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout game
+        uses: actions/checkout@v4
+      - name: Install Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Create Android WebView wrapper
+        shell: bash
+        run: |
+          mkdir -p android/app/src/main/java/com/euan/championship android/app/src/main/assets android/app/src/main/res/drawable-nodpi
+          cp index.html android/app/src/main/assets/index.html
+          cp icons/icon-192.png android/app/src/main/res/drawable-nodpi/ic_launcher.png
+          cat > android/settings.gradle <<'GRADLE'
+          pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+          dependencyResolutionManagement { repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS); repositories { google(); mavenCentral() } }
+          rootProject.name = 'EuansWrestlingChampionship'
+          include ':app'
+          GRADLE
+          cat > android/build.gradle <<'GRADLE'
+          plugins { id 'com.android.application' version '8.7.3' apply false }
+          GRADLE
+          cat > android/app/build.gradle <<'GRADLE'
+          plugins { id 'com.android.application' }
+          android {
+            namespace 'com.euan.championship'
+            compileSdk 35
+            defaultConfig {
+              applicationId 'com.euan.championship'
+              minSdk 24
+              targetSdk 35
+              versionCode 1
+              versionName '1.0'
+            }
+          }
+          GRADLE
+          cat > android/app/src/main/AndroidManifest.xml <<'XML'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+            <application android:label="Euan's Wrestling Championship GO!" android:icon="@drawable/ic_launcher" android:theme="@android:style/Theme.Material.Light.NoActionBar" android:hardwareAccelerated="true">
+              <activity android:name="com.euan.championship.MainActivity" android:exported="true" android:screenOrientation="sensorLandscape" android:configChanges="orientation|screenSize|keyboardHidden">
+                <intent-filter>
+                  <action android:name="android.intent.action.MAIN" />
+                  <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+              </activity>
+            </application>
+          </manifest>
+          XML
+          cat > android/app/src/main/java/com/euan/championship/MainActivity.java <<'JAVA'
+          package com.euan.championship;
+          import android.app.Activity;
+          import android.os.Bundle;
+          import android.content.pm.ActivityInfo;
+          import android.view.View;
+          import android.webkit.WebChromeClient;
+          import android.webkit.WebView;
+          import android.webkit.WebViewClient;
+          public class MainActivity extends Activity {
+              private WebView game;
+              @Override public void onCreate(Bundle saved) {
+                  super.onCreate(saved);
+                  setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+                  getWindow().getDecorView().setSystemUiVisibility(
+                      View.SYSTEM_UI_FLAG_FULLSCREEN |
+                      View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                      View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                      View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                      View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                      View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                  );
+                  game = new WebView(this);
+                  game.getSettings().setJavaScriptEnabled(true);
+                  game.getSettings().setDomStorageEnabled(true);
+                  game.getSettings().setMediaPlaybackRequiresUserGesture(false);
+                  game.setWebViewClient(new WebViewClient());
+                  game.setWebChromeClient(new WebChromeClient());
+                  setContentView(game);
+                  game.loadUrl("file:///android_asset/index.html");
+              }
+              @Override public void onBackPressed() {
+                  if (game != null && game.canGoBack()) game.goBack();
+                  else super.onBackPressed();
+              }
+              @Override protected void onDestroy() {
+                  if (game != null) game.destroy();
+                  super.onDestroy();
+              }
+          }
+          JAVA
+      - name: Assemble installable Android APK
+        run: gradle -p android --no-daemon assembleDebug
+      - name: Prepare deliverable
+        run: |
+          mkdir -p dist
+          cp android/app/build/outputs/apk/debug/app-debug.apk dist/Euans-Wrestling-Championship-GO-Android.apk
+          ls -lh dist/*.apk
+      - name: Save APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Euans-Wrestling-Championship-GO-Android
+          path: dist/Euans-Wrestling-Championship-GO-Android.apk
+      - name: Publish free direct APK download
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if gh release view android-latest >/dev/null 2>&1; then
+            gh release upload android-latest dist/Euans-Wrestling-Championship-GO-Android.apk --clobber
+          else
+            gh release create android-latest dist/Euans-Wrestling-Championship-GO-Android.apk --title "Euan's Wrestling Championship GO! (Android)" --notes "Android APK built from the latest published game. Free, no ads. Install by downloading the APK on an Android phone and allowing installation from your browser."
+          fi
