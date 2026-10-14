@@ -168,7 +168,7 @@ function updateFighter(f,dt){
 }
 
 function calcHealth(f){return Math.round((f.head+f.body+f.legs)/3)}
-function pinReady(f){return calcHealth(f)<=48&&[f.head,f.body,f.legs].filter(v=>v<=68).length>=2}
+function pinReady(f){return calcHealth(f)<=38&&[f.head,f.body,f.legs].filter(v=>v<=58).length>=2}
 
 const ringLeft=172,ringRight=1107;
 function update(dt){time+=dt;commentaryTimer=Math.max(0,commentaryTimer-dt);commentaryCool=Math.max(0,commentaryCool-dt);refWarning=Math.max(0,refWarning-dt);shakes=Math.max(0,shakes-dt*36);flash=Math.max(0,flash-dt*2);announceTimer=Math.max(0,announceTimer-dt);for(const p of particles){p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=700*dt}particles=particles.filter(p=>p.life>0);if(impactEffect)impactEffect.life=Math.max(0,impactEffect.life-dt);for(const q of confetti){q.x+=q.vx*dt;q.y+=q.vy*dt;q.rot+=dt*4;if(q.y>H+50)q.y=-50}
@@ -303,7 +303,7 @@ if(new URLSearchParams(location.search).has('ewcTest'))window.__EWC_TEST__={
  hit(kind){damage(player,foe,kind);return this.getState()},
  attemptPin(){foe.knock=4;doMove(player,'pin');return this.getState()},
  deathFart(){foe=makeFighter(fighters[1],710,false);finisherFX(foe,player);return this.getState()},
- wearDownOpponent(){for(const kind of ['punch','grapple','kick'])for(let i=0;i<5;i++){damage(player,foe,kind);foe.knock=0;foe.invuln=0;foe.health=calcHealth(foe)}return this.getState()},
+ wearDownOpponent(extra=false){for(const kind of ['punch','grapple','kick'])for(let i=0;i<5;i++){damage(player,foe,kind);foe.knock=0;foe.invuln=0;foe.health=calcHealth(foe)}if(extra){damage(player,foe,'punch');foe.knock=0;foe.invuln=0;foe.health=calcHealth(foe)}return this.getState()},
  startRound(n){startRound(n)}
 };
 menu();requestAnimationFrame(loop);
