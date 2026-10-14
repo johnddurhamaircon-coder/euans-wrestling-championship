@@ -9,7 +9,7 @@
 </head>
 <body><div id="shell"><canvas id="game" width="1280" height="720" aria-label="Wrestling game arena"></canvas>
 <div class="topbar"><button id="skip" class="mini" style="display:none">SKIP WALKOUT ▶</button><button id="mute" class="mini">♫ ON</button><button id="pause" class="mini">Ⅱ PAUSE</button></div>
-<div id="rotate">↻ Landscape looks best!</div>
+<div id="rotate">↻ Landscape looks best!</div><button id="escapePin" class="touch pin" style="display:none;position:absolute;left:50%;bottom:84px;transform:translateX(-50%);z-index:3;width:150px;height:54px;font-size:18px">ESCAPE!</button>
 <div class="control-strip" id="mobileControls"><div class="controls-left"><button class="touch" data-input="left" aria-label="Move left">◀</button><button class="touch" data-input="right" aria-label="Move right">▶</button><button class="touch" data-input="jump" id="aerialButton">JUMP</button><button class="touch" data-input="block">BLOCK</button></div><div class="controls-right"><button class="touch attack" data-input="punch">HIT</button><button class="touch lowblow" data-input="kick">LOW BLOW</button><button class="touch grapple" data-input="grapple">SLAM</button><button class="touch pin" data-input="pin">PIN</button><button class="touch special" data-input="special">⚡ FINISH</button></div></div>
 <div id="overlay"><section class="panel" id="panel"></section></div></div>
 <script>
@@ -23,12 +23,12 @@ const quips={intro:['SOMEONE TELL THESE PEOPLE THIS IS NOT A TRAINING EXERCISE!'
 function shout(s,sec=2.5,force=false){if(!force&&commentaryCool>0)return;commentaryText=s;commentaryTimer=sec;commentaryCool=force?1.4:3.6}
 function pun(f){if(!f)return '';switch(f.bio.name){case 'ANTH WEIR':return 'ANTH WEIR HAS LOST HIS COMPOSURE! OH WAIT, HE NEVER HAD ANY!';case 'OWEN STRINGER':return 'OWEN STRINGER HAS BEEN UNSTRUNG!';case 'MARTY ALLEN':return 'MARTY ALLEN? THE PARTY HAS BEEN CANCELLED!';case 'JOHN DRAPER':return 'THE BIG LAD HAS BEEN LAID OFF!';case 'BRAD DAVIS':return 'BRAD DAVIS HAS FAILED HIS OWN SAFETY INSPECTION!';default:return 'EUAN HAS BEEN EUAN-HANDLED!'}}
 function introQuip(f){return ({'ANTH WEIR':'THE IRON WEIR! ZERO EMOTIONS AND ONE VERY BAD ATTITUDE!','OWEN STRINGER':'OWEN STRINGER! HE LOOKS A LITTLE TENSE!','MARTY ALLEN':'MARTY ALLEN! HE IS CHARGING ADMISSION TO HIS OWN PARTY!','JOHN DRAPER':'THE BIG LAD! HR WOULD LIKE A WORD WITH THIS MAN!','BRAD DAVIS':'BRAD DAVIS! THE CSCS CARD COLLECTOR IS HERE!'})[f.bio.name]||'THE EUANATOR IS READY!'}
-function specialQuip(f){return ({'ANTH WEIR':"ANTH WEIR GOES FOR THE EMOTIONLESS BOMB! HE'S STILL NOT SMILING!",'MARTY ALLEN':"MARTY ALLEN GOES FOR MONEY TALKS! THAT'S AN EXPENSIVE LANDING!",'OWEN STRINGER':'STRING THEORY SUPLEX! THE MAN IS COMPLETELY UNRAVELLING!','JOHN DRAPER':'THE DRAPER DROP! SOMEBODY CALL AN AIR-CON ENGINEER!','BRAD DAVIS':'THE CARD CONFISCATOR! BRAD FAILED THE RISK ASSESSMENT!','EUAN':'THE EUANATOR! SOMEBODY PHONE HIS MAM!'})[f.bio.name]}
+function specialQuip(f){return ({'ANTH WEIR':"ANTH WEIR GOES FOR THE EMOTIONLESS BOMB! HE'S STILL NOT SMILING!",'MARTY ALLEN':"MARTY ALLEN GOES FOR MONEY TALKS! THAT'S AN EXPENSIVE LANDING!",'OWEN STRINGER':'OWEN STRINGER HAS FINALLY SNAPPED! HE\'S GONE FROM STRUNG OUT TO FULLY UNHINGED!','JOHN DRAPER':'THE DRAPER DROP! SOMEBODY CALL AN AIR-CON ENGINEER!','BRAD DAVIS':'THE CARD CONFISCATOR! BRAD FAILED THE RISK ASSESSMENT!','EUAN':'THE EUANATOR! SOMEBODY PHONE HIS MAM!'})[f.bio.name]}
 
 const fighters=[
 {first:'EUAN',last:'THE UNSTOPPABLE',name:'EUAN',primary:'#20d5ed',secondary:'#0b6d9c',skin:'#f4ba8a',hair:'#5a2b1a',accent:'#ffffff',move:'THE EUANATOR',weight:1.03},
 {first:'ANTH',last:'THE IRON WEIR',name:'ANTH WEIR',primary:'#cb4bdf',secondary:'#54227e',skin:'#d6a07f',hair:'#2d2021',accent:'#ffdb7d',move:'THE EMOTIONLESS BOMB',weight:1.10},
-{first:'OWEN',last:'THE STRING SLINGER',name:'OWEN STRINGER',primary:'#6aed5b',secondary:'#236a4a',skin:'#e8b291',hair:'#5b3722',accent:'#faff8a',move:'STRING THEORY SUPLEX',weight:.96},
+{first:'OWEN',last:'THE STRING SLINGER',name:'OWEN STRINGER',primary:'#6aed5b',secondary:'#236a4a',skin:'#e8b291',hair:'#5b3722',accent:'#faff8a',move:'ULTIMATE ANGER',weight:.96},
 {first:'MARTY',last:'THE PARTY STARTER',name:'MARTY ALLEN',primary:'#f75c96',secondary:'#85266e',skin:'#c58b66',hair:'#302725',accent:'#ffe8c4',move:'MONEY TALKS',weight:1.05},
 {first:'JOHN',last:'THE BIG LAD',name:'JOHN DRAPER',primary:'#28293e',secondary:'#0e1021',skin:'#d8a17f',hair:'#28201e',accent:'#ffca48',move:'THE DRAPER DROP',weight:1.23},
 {first:'BRAD',last:'THE CSCS ENFORCER',name:'BRAD DAVIS',primary:'#fa9d25',secondary:'#443557',skin:'#e5aa82',hair:'#222027',accent:'#fff4a9',move:'THE CARD CONFISCATOR',weight:1.27}
@@ -101,7 +101,7 @@ function damage(att,def,kind){
   else if(Math.random()<.16)shout(quips.hit[Math.floor(random(0,quips.hit.length))],1.9);
   burst((att.x+def.x)/2,456,kind==='frog'||kind==='special'?35:kind==='grapple'?16:10,kind==='kick'?'#ffc066':kind==='special'?'#ffdd6b':'#ffffff');
  }
- if(def.health<=0){def.knock=Math.max(def.knock,4.1);def.ko=true}
+ if(def.health<=0&&!def.ko){def.knock=Math.max(def.knock,4.1);def.ko=true}
  if(att.isPlayer&&(kind==='special'||kind==='frog'))crowdRoar()
 }
 
@@ -121,8 +121,8 @@ function endPin(p){
 function handlePin(dt){
  if(!pinState)return;
  const p=pinState,h=p.def.health;
- if(p.att===foe){if(pressed.punch||pressed.grapple||pressed.pin||pressed.jump||pressed.special||pressed.kick){p.escape+=25;sfx(270,.05,'sine',.015,350)}p.escape+=dt*(h>40?20:h>15?10:4)}
- else p.escape+=dt*(h>60?39:h>35?23:h>15?11:h>0?5:2);
+ if(p.att===foe){const mash=pressed.escape?38:((pressed.punch||pressed.grapple||pressed.pin||pressed.jump||pressed.special||pressed.kick)?18:0);if(mash){p.escape+=mash;sfx(pressed.escape?420:270,.05,'sine',.02,350)}p.escape+=dt*(h>60?17:h>35?12:h>15?7:h>0?3:0)}
+ else p.escape+=dt*(h>60?24:h>35?17:h>15?10:h>0?4:0);
  if(p.escape>=100){announce('KICK OUT!',1.2);sfx(650,.23,'triangle',.07,330);endPin(p);return}
  p.next-=dt;
  if(p.next<=0){p.next=.9;p.count++;shakes=4;announce(p.count===3?'THREE!!!':p.count+'!!!',.8);sfx(110,.19,'sawtooth',.09,55);if(p.count===3){winner(p.att);return}}
@@ -229,7 +229,7 @@ function drawRef(){
 function drawWrestler(f){if(!f)return;const x=f.x,y=477-f.y,down=f.knock>0,attacking=f.attack>0,p=f.attackDuration?1-f.attack/f.attackDuration:0;
 ctx.save();ctx.translate(x,y);ctx.scale(f.face,1);if(f.hitTimer>0&&Math.sin(time*48)>0){ctx.globalAlpha=.63}
 ctx.fillStyle='#12112266';ctx.beginPath();ctx.ellipse(0,21+f.y*.13,down?93:42,13,0,0,TAU);ctx.fill();
-if(down){ctx.translate(0,16);ctx.rotate(-1.30);ctx.scale(1.08,.92)}else{let lean=attacking?(f.attackType==='special'?-0.18:p<.6?-.15:.22):f.hitTimer?-.22:0;ctx.rotate(lean+Math.sin(time*2.5+f.breath)*.012)}
+if(down){ctx.translate(0,16);ctx.rotate(-1.30);ctx.scale(1.08,.92)}else if(f.groin>0){ctx.translate(0,18+Math.sin(time*18)*3);ctx.rotate(-.42)}else{let lean=attacking?(f.attackType==='special'?-0.18:p<.6?-.15:.22):f.hitTimer?-.22:0;ctx.rotate(lean+Math.sin(time*2.5+f.breath)*.012)}
 const weight=f.bio.weight;ctx.scale(weight,weight);let step=Math.sin(f.step)*Math.min(1,Math.abs(f.vx)/230);let jump=clamp(f.y/220,0,1);
 // Back arm and legs
 function limb(points,colour,width){ctx.strokeStyle='#281827';ctx.lineWidth=width+7;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(...points[0]);for(let i=1;i<points.length;i++)ctx.lineTo(...points[i]);ctx.stroke();ctx.strokeStyle=colour;ctx.lineWidth=width;ctx.stroke()}
@@ -249,12 +249,12 @@ if(!f.isPlayer&&f.bio.name==='JOHN DRAPER'){roundRect(-27,-242,54,10,3,'#ffcc49'
 ctx.fillStyle='#271724';ctx.fillRect(-19,-219,11,4);ctx.fillRect(9,-219,11,4);ctx.fillStyle='#fff';ctx.fillRect(-16,-210,7,5);ctx.fillRect(12,-210,7,5);ctx.fillStyle='#29232d';ctx.fillRect(-12,-209,3,4);ctx.fillRect(15,-209,3,4);ctx.strokeStyle='#703d3c';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-8,-192);ctx.quadraticCurveTo(0,-185,10,-193);ctx.stroke();
 if(f.guard){ctx.strokeStyle='#9af8ff';ctx.lineWidth=5;ctx.beginPath();ctx.arc(3,-149,76,-.8,.8);ctx.stroke()}
 if(f.roar>0){ctx.strokeStyle=f.bio.accent;ctx.lineWidth=4;ctx.globalAlpha=f.roar/1.1;ctx.beginPath();ctx.arc(0,-119,83+Math.sin(time*12)*10,0,TAU);ctx.stroke();ctx.globalAlpha=1}
-ctx.restore();if(f.knock>0&&f.health<65){label(f.ko?'💫':'★',x,278+Math.sin(time*6)*5,28,'#ffea65')}}
+ctx.restore();if(f.groin>0&&!down){label('🤕',x+f.face*38,314+Math.sin(time*10)*5,25,'#ffdd7a')}if(f.knock>0&&f.health<65){label(f.ko?'💫':'★',x,278+Math.sin(time*6)*5,28,'#ffea65')}}
 function drawHud(){const bar=(x,y,f,flip)=>{roundRect(x,y,437,85,14,'#130e25d9','#5d4c91',2);const nm=flip?'RIGHT':'LEFT';label(f.bio.name,x+20,y+22,f.bio.name.length>10?19:25,'#fff','left');label(f.bio.last,x+20,y+47,13,f.bio.accent,'left');let bx=x+157,by=y+15,bw=258;roundRect(bx,by,bw,23,7,'#321e3f');const hp=clamp(f.health/100,0,1);roundRect(flip?bx+bw*(1-hp):bx,by,Math.max(0,bw*hp),23,7,hp>.45?'#4fe8b6':hp>.2?'#ffd262':'#ff6265');ctx.fillStyle='#fff4';ctx.fillRect(flip?bx+bw*(1-hp)+6:bx+6,by+3,Math.max(0,bw*hp-12),4);label(`${Math.ceil(f.health)}%`,bx+bw/2,by+12,16,'#fff','center','#190f28',3);roundRect(bx,by+35,bw,8,4,'#251737');roundRect(flip?bx+bw*(1-f.stamina/100):bx,by+35,bw*f.stamina/100,8,4,'#6dc9fb');if(f.isPlayer){roundRect(bx,by+51,bw,8,4,'#251737');roundRect(bx,by+51,bw*f.special/100,8,4,'#ffce4e');label(f.special>=100?'⚡ EUANATOR READY!':'⚡ FINISHER',x+415,y+69,15,f.special>=100?'#fff176':'#ffde89','right')}};
 bar(22,18,player,false);bar(821,18,foe,true);roundRect(539,17,201,74,16,'#14102bcf','#b67af9',2);label(`MATCH ${round} / 5`,640,42,22,'#ffdf73');label(`${Math.floor(matchSeconds/60)}:${String(Math.floor(matchSeconds%60)).padStart(2,'0')}`,640,70,23,'#f7f6ff');
 for(let i=1;i<=5;i++){roundRect(532+(i-1)*45,97,36,10,4,i<=score?'#ffd66b':'#3f294e')}
 if(announceTimer>0){ctx.globalAlpha=clamp(announceTimer,.15,1);roundRect(332,593,616,46,13,'#0e0a25dd','#f8bb62',2);label(announcer,640,617,25,'#fce4a0');ctx.globalAlpha=1}
-if(player&&player.climb>0){roundRect(450,170,380,45,12,'#150b29ee','#8df6fa',3);label('TOP ROPE! TAP FROG TO LAUNCH',640,193,23,'#edfbff')}if(refWarning>0&&scene==='fight')label('KEVIN HAS SEEN THAT LOW BLOW!',640,142,21,'#ffb65e');if(pinState){const p=pinState;roundRect(452,165,375,141,17,'#120a2be8','#ffdf67',4);label('PIN FALL!',640,199,35,'#fff2a8');label(`${p.count}`,640,250,69,'#ff5b97');roundRect(502,277,277,10,5,'#39213d');roundRect(502,277,277*(p.escape/100),10,5,'#66f7ef');label(p.def===player?'TAP ANY ACTION TO KICK OUT!':'WILL THEY KICK OUT?!',640,311,16,'#e4f9fa')}
+if(player&&player.climb>0){roundRect(450,170,380,45,12,'#150b29ee','#8df6fa',3);label('TOP ROPE! TAP FROG TO LAUNCH',640,193,23,'#edfbff')}if(refWarning>0&&scene==='fight')label('KEVIN HAS SEEN THAT LOW BLOW!',640,142,21,'#ffb65e');if(pinState){const p=pinState;roundRect(452,165,375,141,17,'#120a2be8','#ffdf67',4);label('PIN FALL!',640,199,35,'#fff2a8');label(`${p.count}`,640,250,69,'#ff5b97');roundRect(502,277,277,10,5,'#39213d');roundRect(502,277,277*(p.escape/100),10,5,'#66f7ef');label(p.def===player?'ESCAPE / TAP ACTIONS TO KICK OUT!':'WILL THEY KICK OUT?!',640,311,16,'#e4f9fa')}
 if(scene==='entrance'&&round>1&&round<4){roundRect(370,220,540,209,20,'#15102fe8','#ffcc61',4);label(`CHALLENGER ${round} OF 5`,640,257,26,'#63eaf8');label(foe.bio.name,640,315,48,'#fff7b9');label(foe.bio.last,640,362,27,foe.bio.accent);label('EUAN vs '+foe.bio.name,640,402,23,'#ff86c7')}
 if(scene==='champion'){label('🏆 CHAMPION 🏆',640,220,66,'#ffdc55')}
 }
@@ -276,19 +276,25 @@ label('JOHN DRAPER',640,386,74,'#ffffff','center','#57311e',8);
 label('THE DRAPER DROP  ⚡  FINAL BOSS',640,454,30,'#ffab44');ctx.globalAlpha=1;
 if(t>4.9){let a=clamp((t-4.9)*1.8,0,1);ctx.globalAlpha=a;label('EUAN... YOU ARE IN TROUBLE!',640,558,31,'#fff5b0');ctx.globalAlpha=1}
 ctx.restore()}
-function render(){const skip=document.getElementById('skip');skip.style.display=scene==='entrance'?'block':'none';const aerial=document.getElementById('aerialButton');if(aerial)aerial.textContent=player&&player.climb>0?'FROG!':player&&player.dive>0?'SPLASH':'JUMP';ctx.save();ctx.clearRect(0,0,W,H);ctx.translate(random(-shakes,shakes),random(-shakes,shakes));drawBackground();drawRing();drawRef();if(player&&foe){drawWrestler(player.x<foe.x?foe:player);drawWrestler(player.x<foe.x?player:foe);drawForegroundRopes();for(const p of particles){ctx.globalAlpha=clamp(p.life*2,0,1);ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,TAU);ctx.fill()}ctx.globalAlpha=1;drawHud();drawBossEntrance()}else{drawForegroundRopes();label('THE ARENA AWAITS...',640,457,51,'#ffeeb3')}
+function render(){const skip=document.getElementById('skip');skip.style.display=scene==='entrance'?'block':'none';const escapePin=document.getElementById('escapePin');escapePin.style.display=pinState&&pinState.def===player?'block':'none';const aerial=document.getElementById('aerialButton');if(aerial)aerial.textContent=player&&player.climb>0?'FROG!':player&&player.dive>0?'SPLASH':'JUMP';ctx.save();ctx.clearRect(0,0,W,H);ctx.translate(random(-shakes,shakes),random(-shakes,shakes));drawBackground();drawRing();drawRef();if(player&&foe){drawWrestler(player.x<foe.x?foe:player);drawWrestler(player.x<foe.x?player:foe);drawForegroundRopes();for(const p of particles){ctx.globalAlpha=clamp(p.life*2,0,1);ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,TAU);ctx.fill()}ctx.globalAlpha=1;drawHud();drawBossEntrance()}else{drawForegroundRopes();label('THE ARENA AWAITS...',640,457,51,'#ffeeb3')}
 for(const q of confetti){ctx.save();ctx.translate(q.x,q.y);ctx.rotate(q.rot);ctx.fillStyle=q.col;ctx.fillRect(-q.sz/2,-q.sz/3,q.sz,q.sz*.7);ctx.restore()}
 if(flash>0){ctx.globalAlpha=flash*.9;ctx.fillStyle='#fff5c1';ctx.fillRect(0,0,W,H);ctx.globalAlpha=1}ctx.restore()}
 function loop(timestamp){if(!last)last=timestamp;let dt=clamp((timestamp-last)/1000,0,.035);last=timestamp;if(scene!=='paused')update(dt);render();requestAnimationFrame(loop)}
 const keyToInput={KeyU:'kick',ArrowLeft:'left',ArrowRight:'right',KeyA:'left',KeyD:'right',KeyW:'jump',ArrowUp:'jump',KeyJ:'punch',KeyK:'grapple',KeyL:'pin',KeyI:'special',ShiftLeft:'block',ShiftRight:'block',Space:'punch'};
 function inputSet(name,on){if(name==='left'||name==='right'||name==='block'){held[name]=on;return}if(on)pressed[name]=true}
-window.addEventListener('keydown',e=>{if(e.code==='Escape'||e.code==='KeyP'){togglePause();return}if(e.repeat&& !['ArrowLeft','ArrowRight','KeyA','KeyD','ShiftLeft','ShiftRight'].includes(e.code))return;const k=keyToInput[e.code];if(k){e.preventDefault();inputSet(k,true)}});window.addEventListener('keyup',e=>{const k=keyToInput[e.code];if(k){e.preventDefault();inputSet(k,false)}});window.addEventListener('blur',()=>{for(let k in held)held[k]=false});
+window.addEventListener('keydown',e=>{if(e.code==='Escape'){if(pinState&&pinState.def===player){e.preventDefault();pressed.escape=true;return}togglePause();return}if(e.code==='KeyP'){togglePause();return}if(e.repeat&& !['ArrowLeft','ArrowRight','KeyA','KeyD','ShiftLeft','ShiftRight'].includes(e.code))return;const k=keyToInput[e.code];if(k){e.preventDefault();inputSet(k,true)}});window.addEventListener('keyup',e=>{const k=keyToInput[e.code];if(k){e.preventDefault();inputSet(k,false)}});window.addEventListener('blur',()=>{for(let k in held)held[k]=false});
 for(const btn of document.querySelectorAll('[data-input]')){const k=btn.dataset.input;btn.addEventListener('pointerdown',e=>{e.preventDefault();btn.setPointerCapture(e.pointerId);inputSet(k,true);btn.classList.add('active')});for(const ev of ['pointerup','pointercancel','lostpointercapture'])btn.addEventListener(ev,e=>{e.preventDefault();inputSet(k,false);btn.classList.remove('active')})}
 function togglePause(){if(scene==='fight'||scene==='entrance'){pauseReturn=scene;scene='paused';openPanel(`<div class="eyebrow">HALF-TIME OR SOMETHING</div><div class="logo">TIME <span>OUT!</span></div><p class="desc">The championship can wait while Euan grabs a biscuit.</p><button class="action" id="resume">BACK TO THE FIGHT ▶</button><button class="action secondary" id="quit" style="margin-top:16px">MAIN MENU</button>`);document.getElementById('resume').onclick=()=>{scene=pauseReturn;overlay.classList.add('hidden')};document.getElementById('quit').onclick=menu}else if(scene==='paused'){scene=pauseReturn;overlay.classList.add('hidden')}}
-document.getElementById('skip').addEventListener('click',()=>{if(scene==='entrance'){roundDelay=.01}});pauseBtn.addEventListener('click',togglePause);mute.addEventListener('click',()=>{soundOn=!soundOn;mute.textContent=soundOn?'♫ ON':'♫ OFF'});
+document.getElementById('skip').addEventListener('click',()=>{if(scene==='entrance'){roundDelay=.01}});document.getElementById('escapePin').addEventListener('pointerdown',e=>{e.preventDefault();pressed.escape=true});pauseBtn.addEventListener('click',togglePause);mute.addEventListener('click',()=>{soundOn=!soundOn;mute.textContent=soundOn?'♫ ON':'♫ OFF'});
 // Gamepad controls (Xbox / PlayStation), with edge detection for attacks.
 let oldPad={};function gamepads(){let pads=navigator.getGamepads?.();const gp=pads&&Array.from(pads).find(x=>x);if(!gp)return;let x=gp.axes[0]||0;held.left=x<-.22||!!gp.buttons[14]?.pressed;held.right=x>.22||!!gp.buttons[15]?.pressed;held.block=!!gp.buttons[4]?.pressed;const mapping={0:'punch',1:'grapple',2:'pin',3:'special',5:'jump',7:'kick'};for(const [i,name] of Object.entries(mapping)){let on=!!gp.buttons[+i]?.pressed;if(on&&!oldPad[i])pressed[name]=true;oldPad[i]=on}if(gp.buttons[9]?.pressed&&!oldPad.start){if(scene==='menu')startRound(1);else if(scene==='paused')togglePause()}oldPad.start=!!gp.buttons[9]?.pressed}
-const originalUpdate=update;update=function(dt){gamepads();originalUpdate(dt)};menu();requestAnimationFrame(loop);
+const originalUpdate=update;update=function(dt){gamepads();originalUpdate(dt)};
+if(new URLSearchParams(location.search).has('ewcTest'))window.__EWC_TEST__={
+ getState(){return{scene,round,player:player&&{x:player.x,health:player.health,knock:player.knock,recovering:player.recovering,invuln:player.invuln,groin:player.groin,special:player.special,attackType:player.attackType,bio:player.bio.name},foe:foe&&{x:foe.x,health:foe.health,knock:foe.knock,groin:foe.groin,bio:foe.bio.name,move:foe.bio.move},pinActive:!!pinState,pinEscape:pinState&&pinState.escape,carEntrance:scene==='entrance'&&round===5}},
+ prepare(mode){scene='fight';overlay.classList.add('hidden');player=makeFighter(fighters[0],620,true);foe=makeFighter(fighters[1],710,false);pinState=null;matchSeconds=0;if(mode==='recovery'){player.knock=.2;player.health=75;player.ko=true}if(mode==='lowblow'){player.x=610;foe.x=685;player.face=1}if(mode==='escapePin'){player.health=75;player.knock=3.5;player.x=700;foe.x=660;beginPin(foe,player)}if(mode==='pin'){foe.health=0;foe.knock=4;foe.ko=true;beginPin(player,foe)}if(mode==='owen'){foe=makeFighter(fighters[2],710,false);foe.special=100}},
+ startRound(n){startRound(n)}
+};
+menu();requestAnimationFrame(loop);
 })();
 </script><script>if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(err=>console.warn('Offline installation not available:',err)));}</script></body></html>
 
